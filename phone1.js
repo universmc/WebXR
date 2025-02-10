@@ -43,39 +43,31 @@ function getFrontCameraId(videoDevices) {
 }
 
 // Fonction pour basculer entre les caméras
+// Fonction pour basculer entre les caméras
 async function switchCamera() {
-  try {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter((device) => device.kind === 'videoinput');
-    const frontCameraId = getFrontCameraId(videoDevices);
-
-    if (frontCameraId) {
-      if (currentCameraId === frontCameraId) {
-        // Basculer vers la caméra arrière (ou une autre caméra disponible)
-        const nextCameraIndex = (videoDevices.findIndex(device => device.deviceId === currentCameraId) + 1) % videoDevices.length;
-        const nextDeviceId = videoDevices[nextCameraIndex].deviceId;
-        const newStream = await getVideoStream(nextDeviceId);
-        video.srcObject = newStream;
-        currentStream.getTracks().forEach((track) => track.stop());
-        currentStream = newStream;
-        currentCameraId = nextDeviceId;
-        video.style.transform = 'scaleX(1)'; // Désactiver l'effet miroir pour la caméra arrière
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+      const frontCameraId = getFrontCameraId(videoDevices);
+  
+      if (frontCameraId) {
+        if (currentCameraId === frontCameraId) {
+          // Basculer vers la caméra arrière
+          // ... (code pour basculer vers la caméra arrière) ...
+          video.style.transform = 'scaleX(1)'; // Désactiver l'effet miroir
+        } else {
+          // Basculer vers la caméra frontale
+          // ... (code pour basculer vers la caméra frontale) ...
+          video.style.transform = 'scaleX(-1)'; // Activer l'effet miroir
+        }
       } else {
-        // Basculer vers la caméra frontale
-        const newStream = await getVideoStream(frontCameraId);
-        video.srcObject = newStream;
-        currentStream.getTracks().forEach((track) => track.stop());
-        currentStream = newStream;
-        currentCameraId = frontCameraId;
-        video.style.transform = 'scaleX(-1)'; // Activer l'effet miroir pour la caméra frontale
+        console.error('No front camera found.');
       }
-    } else {
-      console.error('No front camera found.');
+    } catch (error) {
+      console.error('Error switching camera:', error);
     }
-  } catch (error) {
-    console.error('Error switching camera:', error);
   }
-}
+  
 
 // Écouteur d'événements pour le bouton "switch caméra"
 switchCameraButton.addEventListener('click', switchCamera);
