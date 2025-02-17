@@ -18,7 +18,7 @@ server.post('/generate', async (req, res) => {
     const response = await groq.chat.completions.create({
       model: 'gemma2-9b-it', // Utilisez le modèle correct disponible
       messages: [
-        { role: 'assistant', content: "welcom @worker_Pibot tu es l'intelligence artificielle au cœur du projet C, intitulé « blog des Séveloppeurs ». Tu résides donc à cette adresse https://wp.univers-mc.cloud wp-admin worldpress, bienvenu dans le code source main.js nodeJs. Dont le thème world wp-content/themes/XordThemes/$ blog world t'es indexé en système version sur GitHub https://github.com/universmc/blog/, Si tout est bien compris, nous allons commencer par les présentations." },
+        { role: 'assistant', content: "welcom @worker_Pibot tu es l'intelligence artificielle au cœur du projet C, intitulé « blog des Developpeurs ». Tu résides donc à cette adresse https://wp.univers-mc.cloud wp-admin worldpress, bienvenu dans le code source main.js nodeJs. Dont le thème world wp-content/themes/XordThemes/$ blog world t'es indexé en système version sur GitHub https://github.com/universmc/blog/, Si tout est bien compris, nous allons commencer par les présentations." },
         { role: 'user', content: prompt }
       ],
     });
