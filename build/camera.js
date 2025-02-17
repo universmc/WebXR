@@ -43,7 +43,31 @@ async function switchCamera() {
   const isFrontCamera = videoDevices[nextCameraIndex].label.toLowerCase().includes('front');
   video.style.transform = isFrontCamera ? 'scaleX(-1)' : 'scaleX(1)';
 }
-
+// Fonction pour identifier la caméra frontale
+function getFrontCameraId(videoDevices) {
+    for (const device of videoDevices) {
+      if (device.label.toLowerCase().includes('front')) {
+        return device.deviceId;
+      }
+    }
+    return null; // Aucune caméra frontale trouvée
+  }
+  
+  // Fonction pour basculer entre les caméras
+  async function switchCamera() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+    const frontCameraId = getFrontCameraId(videoDevices);
+  
+    if (currentCameraId === frontCameraId) {
+      // Basculer vers la caméra arrière (ou une autre caméra disponible)
+      // ...
+    } else {
+      // Basculer vers la caméra frontale
+      // ...
+    }
+  }
+  
 // Écouteur d'événements pour le bouton "switch caméra"
 switchCameraButton.addEventListener('click', switchCamera);
 
