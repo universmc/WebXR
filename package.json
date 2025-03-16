@@ -6,6 +6,8 @@
     "scripts": {
         "dev": "next dev",
         "start": "electron .",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "session": "node srv/session.js", 
         "watch": "sass --watch src/scss/build.scss src/css/bootstrap.css", 
         "srv": "json-server --watch srv/db_wow.json",
