@@ -1,0 +1,31 @@
+{
+    "templates": [
+      {
+        "id": "template1",
+        "name": "Modèle de base",
+        "description": "Un modèle simple avec une barre de navigation, un contenu principal et un pied de page.",
+        "svg": "<svg>...</svg>"
+      },
+      {
+        "id": "template2",
+        "name": "Modèle avec image de fond",
+        "description": "Un modèle avec une image de fond et une mise en page en colonnes.",
+        "svg": "<svg>...</svg>"
+      }
+    ],
+    "elements": [
+      {
+        "id": "element1",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 50,
+        "fill": "blue"
+      }
+    ],
+    "styles": {
+      "colors": ["red", "green", "blue"],
+      "fonts": ["Arial", "Verdana"]
+    }
+  }

@@ -1,0 +1,12 @@
+{
+    "qr-codes": [
+        {
+            "id": "1",
+            "url": "https://example.com/object1.glb"
+        },
+        {
+            "id": "2",
+            "url": "https://example.com/object2.glb"
+        }
+    ]
+}
