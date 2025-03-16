@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Hello WebXR!</title>
+
+  <script src="https://unpkg.com/three@0.126.0/build/three.js"></script>
+</head>
+<body>
+
+<button id="xrButton">Start Hello WebXR</button>
+
+<script>
+const xrButton = document.getElementById('xrButton');
+
+if (navigator.xr) {
+  console.log("WebXR is supported!");
+  xrButton.onclick = activateXR;
+} else {
+  console.log("WebXR is not supported.");
+  xrButton.disabled = true;
+  xrButton.textContent = "WebXR not supported";
+}
+
+  let xrSession = null;
+  let xrReferenceSpace = null;
+  let gl = null;
+  let renderer = null;
+  let camera = null;
+  let scene = null;
+  let cube = null;
+
+  async function activateXR() {
+    if (xrSession) {
+      return; // Session already active
+    }
+
+    // Add a canvas element and initialize a WebGL context that is compatible with WebXR.
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    gl = canvas.getContext("webgl", { xrCompatible: true });
+
+    // Initialize scene, camera, and renderer
+    scene = new THREE.Scene();
+
+    // The cube will have a different color on each side.
+    const materials = [
+      new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+      new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+      new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+      new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+      new THREE.MeshBasicMaterial({ color: 0x00ffff }),
+      new THREE.MeshBasicMaterial({ color: 0xffff00 })
+    ];
+
+    // Create the cube and add it to the demo scene.
+    cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
+    cube.position.set(0, 0, -0.5); // Place the cube in front of the user
+    scene.add(cube);
+
+    renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      preserveDrawingBuffer: true,
+      canvas: canvas,
+      context: gl
+    });
+    renderer.autoClear = false;
+
+    camera = new THREE.PerspectiveCamera();
+    camera.matrixAutoUpdate = false;
+
+    try {
+      // Initialize a WebXR session using "immersive-ar".  Try "immersive-vr" if AR is not available.
+      xrSession = await navigator.xr.requestSession("immersive-ar");
+      xrButton.textContent = "Stop Hello WebXR";
+      xrButton.onclick = deactivateXR;
+
+    } catch (error) {
+       console.error("AR Session setup failed:", error);
+       xrSession = await navigator.xr.requestSession("immersive-vr"); // Fallback to VR
+       xrButton.textContent = "Stop Hello WebXR";
+       xrButton.onclick = deactivateXR;
+    }
+
+
+    xrSession.updateRenderState({
+      baseLayer: new XRWebGLLayer(xrSession, gl)
+    });
+
+    xrReferenceSpace = await xrSession.requestReferenceSpace('local');
+
+    // Create a render loop that allows us to draw on the AR/VR view.
+    xrSession.requestAnimationFrame(onXRFrame);
+
+  }
+
+  function deactivateXR() {
+    if (xrSession) {
+      xrSession.end();
+      xrSession = null;
+      xrButton.textContent = "Start Hello WebXR";
+      xrButton.onclick = activateXR;
+    }
+  }
+
+  const onXRFrame = (time, frame) => {
+    if (!xrSession) return; // Exit if the session has ended
+
+    xrSession.requestAnimationFrame(onXRFrame);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, xrSession.renderState.baseLayer.framebuffer);
+
+    const pose = frame.getViewerPose(xrReferenceSpace);
+    if (pose) {
+      const view = pose.views[0];
+
+      const viewport = xrSession.renderState.baseLayer.getViewport(view);
+      renderer.setSize(viewport.width, viewport.height);
+
+      camera.matrix.fromArray(view.transform.matrix);
+      camera.projectionMatrix.fromArray(view.projectionMatrix);
+      camera.updateMatrixWorld(true);
+
+      renderer.render(scene, camera);
+    }
+  }
+
+  xrButton.onclick = activateXR;
+
+
+</script>
+
+</body>
+</html>

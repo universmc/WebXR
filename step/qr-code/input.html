@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Générateur de NFT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Encoder un message pour le NFT</h1>
+    <form id="message-form">
+        <label for="message">Message :</label><br>
+        <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Générer le QR code</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('message-form');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Empêcher la soumission par défaut du formulaire
+
+            const message = document.getElementById('message').value;
+
+            // Envoi du message au serveur pour l'encodage et la génération du QR code
+            fetch('/generate-qr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Redirection vers output.html avec les données du QR code
+                window.location.href = `output.html?qr_code=${data.qr_code}&metadata=${JSON.stringify(data.metadata)}`;
+            })
+            .catch(error => {
+                console.error('Erreur :', error);
+            });
+        });
+    </script>
+</body>
+</html>

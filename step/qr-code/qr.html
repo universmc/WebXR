@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFT Généré</title>
+</head>
+<body>
+    <div id="qrcode"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Récupérer l'URL ou le chemin du fichier image du QR code
+        const qrCodeData = "./"; // Remplacez par l'URL ou le chemin correct
+
+        // Afficher le QR code
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrCodeData,
+            width: 200,
+            height: 200,
+        });
+    </script>
+</body>
+</html>

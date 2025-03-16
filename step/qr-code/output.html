@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFT Généré</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>QR code et métadonnées du NFT</h1>
+
+    <div id="qrcode"></div>
+    <div id="metadata"></div>
+
+    <script src="scripts/qrcode.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const qrCodeData = urlParams.get('qr_code');
+        const metadata = JSON.parse(urlParams.get('metadata'));
+
+        // Affichage du QR code
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrCodeData,
+            width: 200,
+            height: 200,
+        });
+
+        // Affichage des métadonnées
+        document.getElementById("metadata").innerHTML = JSON.stringify(metadata, null, 2); // Formatage JSON pour une meilleure lisibilité
+    </script>
+</body>
+</html>
