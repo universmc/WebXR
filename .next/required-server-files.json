@@ -96,7 +96,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Volumes/devOps/api/build/next",
+    "outputFileTracingRoot": "/Volumes/devOps/api/items/WebXR",
     "experimental": {
       "allowedDevOrigins": [],
       "nodeMiddleware": false,
@@ -175,7 +175,7 @@
       "forceSwcTransforms": false,
       "largePageDataBytes": 128000,
       "turbo": {
-        "root": "/Volumes/devOps/api/build/next"
+        "root": "/Volumes/devOps/api/items/WebXR"
       },
       "typedRoutes": false,
       "typedEnv": false,
@@ -281,7 +281,7 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.mjs"
   },
-  "appDir": "/Volumes/devOps/api/build/next",
+  "appDir": "/Volumes/devOps/api/items/WebXR",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
